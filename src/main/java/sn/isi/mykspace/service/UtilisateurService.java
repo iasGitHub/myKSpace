@@ -6,6 +6,7 @@ import sn.isi.mykspace.entities.Utilisateur;
 import sn.isi.mykspace.repository.UtilisateurRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtilisateurService {
@@ -20,8 +21,16 @@ public class UtilisateurService {
         return utilisateurRepository.findAll();
     }
 
-    // Ajout nouvel utilisateur
+    // Ajout nouvel utilisateur.js
     public void save(Utilisateur utilisateur) {
         utilisateurRepository.save(utilisateur);
+    }
+
+    public Optional<Utilisateur> findById(int id) {
+        return utilisateurRepository.findById(id);
+    }
+
+    public void delete(Integer id) {
+        utilisateurRepository.deleteById(id);
     }
 }

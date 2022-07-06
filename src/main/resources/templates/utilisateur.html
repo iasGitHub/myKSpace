@@ -300,7 +300,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid table-responsive">
                     <div class="row">
                         <div class="col-lg-12">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Ouvrir formulaire</button>
@@ -315,6 +315,7 @@
                                     <th>Mot de passe</th>
                                     <th>Téléphone</th>
                                     <th>Statut</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -327,6 +328,13 @@
                                     <td th:text="${utilisateur.email}"></td>
                                     <td th:text="${utilisateur.telephone}"></td>
                                     <td th:text="${utilisateur.statut}"></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a th:href="@{/utilisateurs/findById/(id=${utilisateur.id})}" class="btn btn-warning" id="editUtilisateur"><i class="icon_pencil-edit">Modifier</i></a>
+                                            <a th:href="@{/utilisateurs/findById/(id=${utilisateur.id})}" class="btn btn-secondary" id="detailsUtilisateur"><i class="icon_document_alt">Détails</i></a>
+                                            <a th:href="@{/utilisateurs/delete/(id=${utilisateur.id})}" class="btn btn-danger" id="deleteUtilisateur"><i class="icon_close_alt2">Supprimer</i></a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -379,16 +387,16 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal | Pour ajout utilisateur -->
     <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Nouveau utilisateur</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/utilisateurs/addNew}">
+                    <form th:action="@{/utilisateurs/addNew}" method="post">
                         <div class="form-group">
                             <label for="nom" class="col-form-label">Nom</label>
                             <input type="text" class="form-control" id="nom" name="nom">
@@ -420,7 +428,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Enregistrer</button>
+                            <button type="submit" class="btn btn-success w-100">Enregistrer</button>
                         </div>
                     </form>
                 </div>
@@ -428,6 +436,125 @@
         </div>
     </div>
 
+    <!-- Modal | Pour modifier-->
+    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel1">Modifier utilisateur</h5>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/utilisateurs/update}" method="put">
+                        <div class="form-group">
+                            <label class="col-form-label">Id</label>
+                            <input type="text" class="form-control" id="idModifie" name="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="nom" class="col-form-label">Nom</label>
+                            <input type="text" class="form-control" id="nomModifie" name="nom">
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom" class="col-form-label">Prenom</label>
+                            <input type="text" class="form-control" id="prenomModifie" name="prenom">
+                        </div>
+                        <div class="form-group">
+                            <label for="pseudo" class="col-form-label">Pseudo</label>
+                            <input type="text" class="form-control" id="pseudoModifie" name="pseudo">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">Email</label>
+                            <input type="text" class="form-control" id="emailModifie" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="motDePasse" class="col-form-label">Mot de passe</label>
+                            <input type="text" class="form-control" id="motDePasseModifie" name="motDePasse">
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone" class="col-form-label">Numéro de téléphone</label>
+                            <input type="text" class="form-control" id="telephoneModifie" name="telephone">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-select" aria-label="Default select example" id="statutModifie" name="statut">
+                                <option selected>False</option>
+                                <option value="1" hidden>True</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success w-100">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal | Pour supprimer-->
+    <div class="modal" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm la suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Voulez-vous vraiment supprimer cet enregistrement ?</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-danger" id="confirmDeleteButton" href="">Oui Supprimer</a>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal | Pour afficher les details-->
+    <div class="modal fade" id="detailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel2">Détails de l'utilisateur</h5>
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Fermer</button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-form-label">Id</label>
+                            <input type="text" class="form-control" id="idDetails" name="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="nom" class="col-form-label">Nom</label>
+                            <input type="text" class="form-control" id="nomDetails" name="nom" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom" class="col-form-label">Prenom</label>
+                            <input type="text" class="form-control" id="prenomDetails" name="prenom" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="pseudo" class="col-form-label">Pseudo</label>
+                            <input type="text" class="form-control" id="pseudoDetails" name="pseudo" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">Email</label>
+                            <input type="text" class="form-control" id="emailDetails" name="email" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="motDePasse" class="col-form-label">Mot de passe</label>
+                            <input type="text" class="form-control" id="motDePasseDetails" name="motDePasse" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone" class="col-form-label">Numéro de téléphone</label>
+                            <input type="text" class="form-control" id="telephoneDetails" name="telephone" readonly>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-select" aria-label="Default select example" name="statut" readonly>
+                                <option selected>False</option>
+                                <option value="1" hidden>True</option>
+                            </select>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -438,6 +565,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/utilisateur.js"></script>
 
 </body>
 

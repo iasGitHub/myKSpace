@@ -15,7 +15,6 @@ public class ApplicationController {
     public String goCharts() {
         return "charts";
     }
-
     @GetMapping("/tables.html")
     public String goTable() {
         return "tables";
